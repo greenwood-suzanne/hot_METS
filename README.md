@@ -22,7 +22,7 @@ Import this file from GitHub using:
 
 	git fork https://github.com/greenwood-suzanne/crossteam.git
 
-When you run the pipeline, you will find plots outputted as files in your home directory (see Results).
+Or you can copy the /homes/sgreenwood1/crossteam.R file to your own home directory on the comp bio server. When you run the pipeline, you will find plots outputted as files in your home directory (see Results).
   
 # Implementation:
    The pipeline will take in this directory for input and runs through the following major steps:
