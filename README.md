@@ -6,7 +6,7 @@ Group Repo for CompBio METS project
   of 101 FASTQ files containing 16S rRNA sequencing reads taken from the fecal samples of study participants in the METS Ghana site and 
   the US site. There are 50 files each for US and Ghana populations and one H2O control. For the purpose of cross team hacking, we have 
   created a folder for you containing just four of these FASTQ files to speed up running of the script. You will also see a silva file in 
-  this directory; that is the database to which you will be alligning your reads. You can find the directory at: 
+  this directory; that is the database to which you will be comparing your reads. You can find the directory at: 
 /homes/sgreenwood1/crossteam on the comp bio server. 
 
 *Due to the writing permissions on the compbio server, you must copy this crossteam directory to your own in order for this pipeline to work*
@@ -49,6 +49,8 @@ The nuhup .. & is not *necessary* but it is helpful, because it will append the 
 you will be able to see all the text output from each individual step in the pipeline. This nohup.out file should be written to your home 
 directory. If you would prefer, the code can also be run using RStudio. There, you will be able to view all tables by selecting them from
 the environment section on the right. The images will appear under files in your home directory. 
+
+Please allow about 20 minutes for the pipeline to run. When nohup.out is opened, the last line should be the first few lines of the taxonomy table.
 																																																																
 # Results:																						
 The first few lines of the tables that are produced throughout the running of the pipeline can be viewed in the nohup.out file that
