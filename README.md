@@ -26,18 +26,20 @@ Or you can copy the /homes/sgreenwood1/crossteam.R file to your own home directo
   
 # Implementation:
    The pipeline will take in this directory for input and runs through the following major steps:
-      -Filter and trim the raw data: Remove PCR/Sequencing primers, exclude all N bases, exclude all reads with low PHRED scores
-			-Evaluate errors: this is a step neessary for getting taxonomy information later on. outputs plots of
-			error x quality. (May take a few minutes)
-      -Pull out just the unique sequences: Remove duplicates from our filtered data set
-      -Merge the paired reads: Here we combine the forward and reverse reads so that we can ascertain taxonomy information 
+   
+   -Filter and trim the raw data: Remove PCR/Sequencing primers, exclude all N bases, exclude all reads with low PHRED scores.
+      
+   -Evaluate errors: this is a step neessary for getting taxonomy information later on. outputs plots of error x quality. 
+      (May take a few minutes)
+      
+   -Pull out just the unique sequences: Remove duplicates from our filtered data set
+      
+   -Merge the paired reads: Here we combine the forward and reverse reads so that we can ascertain taxonomy information 
       in subsequent steps
-      -Remove chimeras: We want to have only properly matched forward and reverse reads 
-          (Note: it is at this point that we include a tracking function to ensure that we have a sizable number of reads left at this
-          point in the pipeline. This is important for the plotting functions that are still to come. If there are too few reads for any 
-          files, the taxonomy table will not contain a true taxonomic assignment for that read. It will instead show NA which cannot be 
-          plotted later.)
-      -plotting with phyloseq: This portion is still being developed. It will output bar graphs of the taxonomic groups present in our
+      
+   -Remove chimeras: We want to have only properly matched forward and reverse reads 
+      
+   -Plotting with phyloseq: This portion is still being developed. It will output bar graphs of the taxonomic groups present in our
       two sample groups: Ghana and US for comparison.
 
 In order to run the pipeline through the command line, use the crossteam folder as your working directory. The recommended 
@@ -69,13 +71,13 @@ will appear after running is complete.
 		from checking against the silva version 132 database.
 			
 	PNG Files:
-		*note: If there is trouble viewing the image files, the crossteam directory can be copied to your own home directory and 
-		viewed using RStudio under the files tab on the right. There is also the option of SCP-ing the images to your own computer
-		to view.
+		*note: If there is trouble viewing the image files, RStudio is a nice option. Simply navigate to your home directory 
+		under the files tab on the right hand side of the screen. There you should see your copy of the crossteam directory and
+		all the .png files among your documents. There is also the option of SCP-ing the images to your own computer for viewing.
 		-filtFqual.png: qualilty plot of forward reads after filtering
 		-filtRqual.png: qualilty plot of reverse reads after filtering
 		-fqual.png: qualilty plot of forward reads before filtering
 		-Rqual.png: qualilty plot of reverse reads before filtering
 			
-You will also notice a new subdirectory "filtered" within your crossteam directory. This contains the filtered files. 
+You will notice a new subdirectory "filtered" within your crossteam directory. This contains the filtered files. 
 All of your raw data files are unchanged; all filtering/denoising/dereplicating, etc. was done within the filtered subdirectory.
