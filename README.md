@@ -9,8 +9,8 @@ Group Repo for CompBio METS project
   this directory; that is the database to which you will be alligning your reads. You can find the directory at: 
 /homes/sgreenwood1/crossteam on the comp bio server. 
 
-	*Due to the writing permissions on the compbio server, you must copy this crossteam directory to your own 
-					in order for this pipeline to work*
+	#Due to the writing permissions on the compbio server, you must copy this crossteam directory to your own 
+					in order for this pipeline to work
           
 # Software Requirements:
 This pipeline can be run either as an Rscript through command line or in RStudio. The required package: dada2
@@ -19,9 +19,9 @@ This pipeline can be run either as an Rscript through command line or in RStudio
 In addition to the crossteam directory (see Introduction) you will need the crossteam.R file to run the pipeline. 
 Import this file from GitHub using:
 
-*** git clone https://github.com/greenwood-suzanne/crossteam.git
+	git clone https://github.com/greenwood-suzanne/crossteam.git
 
-git fork https://github.com/greenwood-suzanne/crossteam.git ***
+	git fork https://github.com/greenwood-suzanne/crossteam.git
 
 When you run the pipeline, you will find plots outputted as files in your home directory (see Results).
   
