@@ -27,7 +27,8 @@ Implementation:
 	command to run the script is: 
 			nohup Rscript crossteam.R &
 The nuhup .. & is not *necessary* but it is helpful, because it will append the text output into one nohup.out file. Through that file
-you will be able to see all the text output from each individual step in the pipeline.
+you will be able to see all the text output from each individual step in the pipeline. This nohup.out file should be written to your own 
+directory
 																																																																
 Results:																						
 The first few lines of the tables that are produced throughout the running of the pipeline can be viewed in the nohup.out file that
