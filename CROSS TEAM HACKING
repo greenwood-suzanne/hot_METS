@@ -9,7 +9,7 @@ Introduction:
 	***Due to the writing permissions on the compbio server, you must copy this crossteam directory to your own 
 					in order for this pipeline to work***
 
-When you run the pipeline, you will find plots outputted as files in the same directory (see Results).
+When you run the pipeline, you will find plots outputted as files in your home directory (see Results).
   
 Implementation:
    The pipeline will take in this directory for input and runs through the following major steps:
