@@ -14,7 +14,7 @@ Group Repo for CompBio METS project
 *Due to the writing permissions on the compbio server, you must copy this crossteam directory to your own in order for this pipeline to work*
           
 # Software Requirements:
-This pipeline can be run either as an Rscript through command line or in RStudio. The required package: dada2
+This pipeline can be run either as an Rscript through command line. The required package: dada2
 	
 
 # To Import from GitHub:
@@ -53,11 +53,10 @@ your working directory. The recommended command to run the script is:
 			nohup Rscript crossteam.R </homes/your_name/crossteam> &
 			
 The nuhup .. & is not *necessary* but it is helpful, because it will append the text output into one nohup.out file. Through that file
-you will be able to see all the text output from each individual step in the pipeline. This nohup.out file should be written to your home 
-directory. If you would prefer, the code can also be run using RStudio. There, you will be able to view all tables by selecting them from
-the environment section on the right. The images will appear as .png files in your home directory. 
+you will be able to see all the text output from each individual step in the pipeline. This nohup.out file will be written to your home 
+directory. The plot images will appear as .png files in your home directory. 
 
-Please allow about 15-20 minutes for the pipeline to run. When nohup.out is opened, the last line should be the first few lines of the taxonomy table.
+Please allow about 15 minutes for the pipeline to run. When nohup.out is opened, the last line should be the first few lines of the taxonomy table. We recommend opening the nohup.out file in RStudio where you can also open your image files without having to SCP them down.
 																																																																
 # Results:																						
 The first few lines of the tables that are produced throughout the running of the pipeline can be viewed in the nohup.out file that
