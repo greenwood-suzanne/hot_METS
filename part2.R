@@ -22,6 +22,9 @@ if (is.null(opt$file)){
   stop("At least one argument must be supplied (input file).\n", call.=FALSE)
 }
 
+now <- Sys.time()
+now
+
 ####Here we have to again define fwd and reverse reads####
 path <- opt$file
 #the user should put their working directory in the command to run the script
@@ -84,4 +87,5 @@ dev.off()
 print("Filtered reverse read quality profile now available in 'Output' subdirectory.")
 
 print("If you are happy with the filtering so far, move on to Part III. Part III will work with the unique sequences to produce taxonomy table and comparison plots.")
-
+now <- Sys.time()
+now
