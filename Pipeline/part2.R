@@ -1,0 +1,67 @@
+#Pipeline Part II: This part begins with the filtering and trimming of raw data and runs through plotting.
+library(dada2)
+
+####Here we have to again define fwd and reverse reads####
+args = commandArgs(trailingOnly = TRUE)
+path <- args[1]
+#the user should put their working directory in the command to run the script
+path = "/homes/sgreenwood1/crossteam"
+setwd(path)
+
+####Process the rest of the arguments####
+
+fwdln <- strtoi(args[2], base = 0L) #320
+revln <- strtoi(args[3], base = 0L) #220
+trmL <- strtoi(args[4], base = 0L) #15
+#the arguments are:
+  #1: working directory path; WHOLE PATH
+  #2: desired forward read length
+  #3: desired reverse read length
+  #4: how many nucls to trim from the L. ATM that is the same nmber on fwd and rev
+
+#raw files
+fnFs = sort(list.files(path, pattern= "R1_001.fastq", full.names = TRUE))
+fnRs = sort(list.files(path, pattern= "R2_001.fastq", full.names = TRUE))
+sample.names = sapply(strsplit(basename(fnFs), "_"), `[`, 1)
+
+####Assign the filenames for filtered fastq files####
+filt_path <- file.path(path, "filtered") 
+# Place filtered files in filtered/ subdirectory
+filtFs <- file.path(filt_path, paste0(sample.names, "_F_filt.fastq"))
+#filtered forwards
+filtRs <- file.path(filt_path, paste0(sample.names, "_R_filt.fastq"))
+#filtered reverses
+
+print("Filtered files will appear in 'Filtered' subdirectory.")
+
+print("Now filtering reads...")
+
+
+####Now we filter####
+out <- filterAndTrim(fnFs, filtFs, fnRs, filtRs, truncLen=c(fwdln,revln),
+                     maxN=0, maxEE=c(2,2), truncQ=2, rm.phix=TRUE,
+                     compress=TRUE, multithread=FALSE, trimLeft=c(trmL,trmL), matchIDs=TRUE) 
+#out is a table displaying the file name, number of reads to start with
+#and number of reads after truncating at the given positions
+
+print("Finished filtering. Here's what the filtered files look like:  ")
+
+head(out)
+#prints the first few rows showing the original read counts next to the filtered counts
+write.table(out, "Output/filteredandtrimmed.txt", sep="\t")
+#out table saved to txt file. little ugly but does the trick
+
+####Output filtered read quality####
+print("Now generating filtered read quality plots...")
+png(filename = "Output/filtFqual.png")
+plotQualityProfile(filtFs) 
+dev.off()
+print("Filtered forward read quality profile now available in 'Output' subdirectory.")
+
+png(filename = "Output/filtRqual.png")
+plotQualityProfile(filtRs) 
+dev.off()
+print("Filtered reverse read quality profile now available in 'Output' subdirectory.")
+
+print("If you are happy with the filtering so far, move on to Part III. Part III will work with the unique sequences to produce taxonomy table and comparison plots.")
+
