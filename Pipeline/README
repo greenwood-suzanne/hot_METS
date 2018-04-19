@@ -15,9 +15,9 @@ The group name should be part of the <sample information> portion of the file na
 
 Before running this pipeline, you must install the R packages dada2, phyloseq and ggplot2.
 The installation instructions can be found at:
-	 dada2
-	phyloseq
-	ggplot2
+	 dada2: https://benjjneb.github.io/dada2/dada-installation.html
+	phyloseq: https://joey711.github.io/phyloseq/install.html 
+	ggplot2: http://ggplot2.org 
 
 	
 The pipeline is broken into 3 parts for ease of use. Each part can be run either in RStudio or in the command line.
