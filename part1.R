@@ -6,7 +6,7 @@ library(dada2)
 
 option_list = list(
   make_option(c("-f", "--file"), type="character", default=NULL, 
-              help="Path to working directory folder", metavar="character"),
+              help="Path to working directory folder", metavar="character")
 ); 
 
 opt_parser = OptionParser(option_list=option_list);
