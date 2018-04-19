@@ -18,6 +18,9 @@ if (is.null(opt$file)){
   stop("At least one argument must be supplied (input file).\n", call.=FALSE)
 }
 
+now <- Sys.time()
+now
+
 #run this with the same directory for an arg
 path<-opt$file
 #the user should put their working directory in the command to run the script
@@ -203,3 +206,7 @@ now <- Sys.time()
 now
 
 print("This is the end of the pipeline. All tables are tab-delimited and all plots are saved as .png files in the Output subdirectory within the working directory provided.")
+
+                                    
+now <- Sys.time()
+now                                    
