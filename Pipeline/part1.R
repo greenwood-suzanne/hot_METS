@@ -1,7 +1,22 @@
 #Pipeline Part I: This part takes in the raw data and outputs the quality profile. The user should
 #use this information to decide on filtering parameters. Filtering is the first step of Part II.
 
+library(optparse)
 library(dada2)
+
+####This is the flag function####
+option_list = list(
+  make_option(c("-f", "--file"), type="character", default=NULL, 
+              help="Path to working directory folder", metavar="character")
+); 
+
+opt_parser = OptionParser(option_list=option_list);
+opt = parse_args(opt_parser);
+
+if (is.null(opt$file)){
+  print_help(opt_parser)
+  stop("At least one argument must be supplied (input file).\n", call.=FALSE)
+}
 
 now <- Sys.time()
 now
