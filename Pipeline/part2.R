@@ -1,11 +1,35 @@
 #Pipeline Part II: This part begins with the filtering and trimming of raw data and runs through plotting.
 library(dada2)
 
+library(optparse)
+
+
+option_list = list(
+  make_option(c("-f", "--file"), type="character", default=NULL, 
+              help="Path to working directory folder", metavar="character"),
+  make_option(c("-F", "--For"), type="character", default=320, 
+              help="Forward read length", metavar="character"),
+  make_option(c("-R", "--Rev"), type="character", default=220, 
+              help="Reverse read length", metavar="character"),
+  make_option(c("-T", "--TrimL"), type="character", default=15, 
+              help="Primer nucleotides trimmed", metavar="character")
+); 
+
+opt_parser = OptionParser(option_list=option_list);
+opt = parse_args(opt_parser);
+
+if (is.null(opt$file)){
+  print_help(opt_parser)
+  stop("At least one argument must be supplied (input file).\n", call.=FALSE)
+}
+
+now <- Sys.time()
+now
 ####Here we have to again define fwd and reverse reads####
 args = commandArgs(trailingOnly = TRUE)
 path <- args[1]
 #the user should put their working directory in the command to run the script
-path = "/homes/sgreenwood1/crossteam"
+#path = "/homes/sgreenwood1/crossteam"
 setwd(path)
 
 ####Process the rest of the arguments####
