@@ -148,26 +148,26 @@ library(ggplot2)
 now <- Sys.time()
 now
 print("Beginning comparison plotting...")
+
+#gets the location from the sample string
 samples.out <- rownames(seqtab.nochim)
 subject <- sapply(strsplit(samples.out, "_S"), `[`, 1)
 location <- substr(subject,21,26)
 location <- gsub('-', '',location)
+location <- gsub('O', 'H20',location)
+location <- gsub('1USA', 'USA', location)
+
+#gets the sample number from the sample string
 sample_num <-substr(subject, 14, 16)
 sample_num <- gsub('-', '',sample_num)
-#sample_num <- substr(subject,0,15)
-#sample_num <- gsub('-', '',sample_num)
-#day <- as.integer(sapply(strsplit(samples.out, "D"), `[`, 2))
 samdf <- data.frame(Location = location, Sample = sample_num)
-#samdf$When <- "Early"
-#samdf$When[samdf$Day>100] <- "Late"
-#rownames(samdf) <- samples.out
+rownames(samdf) <- samples.out
+samdf <- data.frame(Location = location, Sample = sample_num)
 rownames(samdf) <- samples.out
 
 #a phylo seq object is created
 ps <- phyloseq(otu_table(seqtab.nochim, taxa_are_rows=FALSE), 
                sample_data(samdf), 
-               tax_table(taxa))
-#ps <- prune_samples(sample_names(ps) != "Mock", ps) # Remove mock sample
 ps
 
 print("Calculating alpha diversity...")
@@ -176,12 +176,12 @@ plot_richness(ps, x="Sample", measures=c("Shannon", "Simpson"), color="Location"
 dev.off()
 print("alpha diversity plot saved to Output.")
 
-ords.nmds.bray <- ordinate(ps, method = "NMDS", distance = "bray")
-print("Creating ordination plot...")
-png(filename = "Output/ordination.png")
-plot_ordination(ps, ord.nmds.bray, color="Sample", title="Bray NMDS")
-dev.off()
-print("Ordination plot saved to Output.")
+#ords.nmds.bray <- ordinate(ps, method = "NMDS", distance = "bray")
+#print("Creating ordination plot...")
+#png(filename = "Output/ordination.png")
+#plot_ordination(ps, ord.nmds.bray, color="Sample", title="Bray NMDS")
+#dev.off()
+#print("Ordination plot saved to Output.")
 
 now <- Sys.time()
 now
