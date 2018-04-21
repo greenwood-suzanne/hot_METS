@@ -1,6 +1,7 @@
 #Pipeline Part III: This is the part of the pipeline that takes filtered reads, finds the unique
 #sequences, merges paired end reads, assigns taxonomy, creates the taxonomy table and phyloseq
 #plots. 
+
 library(optparse)
 library(dada2)
 
@@ -21,8 +22,7 @@ now <- Sys.time()
 now
 
 #run this with the same directory for an arg
-args = commandArgs(trailingOnly=TRUE)
-path<-args[1]
+path<-opt$file
 #the user should put their working directory in the command to run the script
 setwd(path)
 getwd()
@@ -125,7 +125,8 @@ sum(seqtab.nochim)/sum(seqtab)
 # print("Tracker table is now in Output.")
 
 ####Assign Taxonomy####
-print("Assigning taxonomy...")
+print("Assigning taxonomy...this will take a while.")
+setwd(path)
 getwd()
 taxa <- assignTaxonomy(seqtab.nochim, "silva_nr_v132_train_set.fa.gz", multithread=FALSE)
 #classify sequence variants taxonomically
@@ -147,26 +148,26 @@ library(ggplot2)
 now <- Sys.time()
 now
 print("Beginning comparison plotting...")
+
+#gets the location from the sample string
 samples.out <- rownames(seqtab.nochim)
 subject <- sapply(strsplit(samples.out, "_S"), `[`, 1)
 location <- substr(subject,21,26)
 location <- gsub('-', '',location)
+location <- gsub('O', 'H20',location)
+location <- gsub('1USA', 'USA', location)
+
+#gets the sample number from the sample string
 sample_num <-substr(subject, 14, 16)
 sample_num <- gsub('-', '',sample_num)
-#sample_num <- substr(subject,0,15)
-#sample_num <- gsub('-', '',sample_num)
-#day <- as.integer(sapply(strsplit(samples.out, "D"), `[`, 2))
 samdf <- data.frame(Location = location, Sample = sample_num)
-#samdf$When <- "Early"
-#samdf$When[samdf$Day>100] <- "Late"
-#rownames(samdf) <- samples.out
+rownames(samdf) <- samples.out
+samdf <- data.frame(Location = location, Sample = sample_num)
 rownames(samdf) <- samples.out
 
 #a phylo seq object is created
 ps <- phyloseq(otu_table(seqtab.nochim, taxa_are_rows=FALSE), 
                sample_data(samdf), 
-               tax_table(taxa))
-#ps <- prune_samples(sample_names(ps) != "Mock", ps) # Remove mock sample
 ps
 
 print("Calculating alpha diversity...")
@@ -175,12 +176,12 @@ plot_richness(ps, x="Sample", measures=c("Shannon", "Simpson"), color="Location"
 dev.off()
 print("alpha diversity plot saved to Output.")
 
-ords.nmds.bray <- ordinate(ps, method = "NMDS", distance = "bray")
-print("Creating ordination plot...")
-png(filename = "Output/ordination.png")
-plot_ordination(ps, ord.nmds.bray, color="Sample", title="Bray NMDS")
-dev.off()
-print("Ordination plot saved to Output.")
+#ords.nmds.bray <- ordinate(ps, method = "NMDS", distance = "bray")
+#print("Creating ordination plot...")
+#png(filename = "Output/ordination.png")
+#plot_ordination(ps, ord.nmds.bray, color="Sample", title="Bray NMDS")
+#dev.off()
+#print("Ordination plot saved to Output.")
 
 now <- Sys.time()
 now
@@ -205,3 +206,7 @@ now <- Sys.time()
 now
 
 print("This is the end of the pipeline. All tables are tab-delimited and all plots are saved as .png files in the Output subdirectory within the working directory provided.")
+
+                                    
+now <- Sys.time()
+now  
