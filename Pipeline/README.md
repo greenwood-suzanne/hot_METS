@@ -1,4 +1,4 @@
-METS Pipeline
+# METS Pipeline
 Suzanne Greenwood, Christina Printzis, Nathaniel Polley
 
 This pipeline is designed for microbiome comparison between two groups using paired-end 16S rRNA sequencing reads in FASTQ format.
@@ -6,10 +6,12 @@ Aftering filtering, trimming and further cleaning the raw data, taxonomy informa
 In order to use this pipeline for FASTQ files not containing 16S rRNA sequencing reads, the database used to determine taxonomy must be changed. The default is Silva v132. 
 Both the training set file and the database file must be in the working directory for taxonomic assignment.
 The pipeline requires that input FASTQ files be named in the following format:
+
 			Forward Reads: <sample information>_R1_001.fastq
 				ex: GSF856-Dugas-99-1297-USA_S157_L001_R1_001.fastq
 			Reverse Reads: <sample information>_R2_001.fastq
 				ex: GSF856-Dugas-99-1297-USA_S157_L001_R2_001.fastq
+				
 The pipeline will not recognize which are forward and which are reverse reads unless the files bear the correct suffixes. 
 The group name should be part of the <sample information> portion of the file name. (i.e. USA, Ghana, etc.)
 
@@ -20,19 +22,21 @@ The installation instructions can be found at:
 	ggplot2: http://ggplot2.org 
 
 	
-The pipeline is broken into 3 parts for ease of use. Each part can be run either in RStudio or in the command line.
+The pipeline is broken into 3 parts for ease of use. Each part can be run in the command line.
 
 Part I: Analyzes the quality of the raw sequencing reads and outputs quality profiles for each appropriately-named file in the working directory.
 	output files are .png format, and appear in a newly created folder within the provided working directory, Output.
 	Output file names: fqual.png -- forward read quality profile
 			   rqual.png -- reverse read quality profile
 
-	To run Part I in the command line: Rscript part1.R -f <path_to_working_directory>
+To run Part I in the command line: 
 	
-	*the -f is required for the program to recognize your path.
-	for help, type: 
+		Rscript part1.R -f <path_to_working_directory>
 	
-	Rscript part1.R -h
+The -f is required for the program to recognize your path.
+for help, type: 
+	
+		Rscript part1.R -h
 
 If raw sequencing read quality is already known, and desired filtering parameters are known,  Part I can be skipped.
 
