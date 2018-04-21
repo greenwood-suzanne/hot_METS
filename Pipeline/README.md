@@ -16,11 +16,15 @@ The pipeline requires that input FASTQ files be named in the following format:
 The pipeline will not recognize which are forward and which are reverse reads unless the files bear the correct suffixes. 
 The group name should be part of the <sample information> portion of the file name. (i.e. USA, Ghana, etc.)
 
-# Before running this pipeline, you must install the R packages dada2, phyloseq and ggplot2.
+# Before running this pipeline:
+You must install the R packages dada2, phyloseq and ggplot2.
 The installation instructions can be found at:
-	 dada2: https://benjjneb.github.io/dada2/dada-installation.html
-	phyloseq: https://joey711.github.io/phyloseq/install.html 
-	ggplot2: http://ggplot2.org 
+
+dada2: https://benjjneb.github.io/dada2/dada-installation.html
+	 
+phyloseq: https://joey711.github.io/phyloseq/install.html 
+	
+ggplot2: http://ggplot2.org 
 
 	
 The pipeline is broken into 3 parts for ease of use. Each part can be run in the command line.
@@ -56,10 +60,15 @@ To run Part II in the command line:
 	Rscript part2.R -f arg1 -F arg2 -R arg3  -T arg4>
 
 where arg#:
-			  #1: working directory path; WHOLE PATH
-			  #2: desired forward read length
- 			  #3: desired reverse read length
-  			  #4: how many nucleotides to trim from the left end. ATM that is the same nmber on fwd and rev
+
+ #1: working directory path; WHOLE PATH
+			  
+ #2: desired forward read length
+			  
+ #3: desired reverse read length
+			  
+ #4: how many nucleotides to trim from the left end. ATM that is the same nmber on fwd and rev
+			  
 			  
 The flags can be also typed out as: --file, --For, --Rev, and --TrimL, respectively. The -h/--help flag is also available on parts 2 and 3.
 
