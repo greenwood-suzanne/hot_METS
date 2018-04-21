@@ -2,32 +2,27 @@
 Group Repo for CompBio METS project
 
 # Introduction:
-  This is the METS project, a pipeline for microbiome analysis that can be run in the command line. The data we have been given is a set 
-  of 101 FASTQ files containing 16S rRNA sequencing reads taken from the fecal samples of study participants in the METS Ghana site and 
-  the US site. There are 50 files each for US and Ghana populations and one H2O control. For the purpose of cross team hacking, we have 
-  created a folder for you containing just four of these FASTQ files to speed up running of the script. You will also see a silva file in 
-  this directory; that is the database to which you will be comparing your reads. You can find the directory at: 
-/homes/sgreenwood1/crossteam on the comp bio server. 
-
-		cp /homes/sgreenwood1/crossteam </homes/your_name>
-
-*Due to the writing permissions on the compbio server, you must copy this crossteam directory to your own in order for this pipeline to work*
+  This is the METS project, a pipeline for microbiome analysis that can be run in the command line. It comes in 3 parts, all of which are contained in the Pipeline folder of this repository. You will need sample data to ensure that you have correctly installed all dependencies as well as the Silva v132 database files. These are also available in this repository. 
+  
           
 # Software Requirements:
-This pipeline can be run either as an Rscript through command line. The required package: dada2
+This pipeline can be run as a series of Rscripts through command line. The required packages are:
+
+ dada2: https://benjjneb.github.io/dada2/dada-installation.html
+	
+phyloseq: https://joey711.github.io/phyloseq/install.html 
+
+ggplot2: http://ggplot2.org 
 	
 
 # To Import from GitHub:
 In addition to the crossteam directory (see Introduction) you will need the crossteam.R file to run the pipeline. 
 Import this file from GitHub using:
 
-	git clone https://github.com/greenwood-suzanne/crossteam.git
+	git clone https://github.com/greenwood-suzanne/hot_METS.git
 
-	git fork https://github.com/greenwood-suzanne/crossteam.git
+	git fork https://github.com/greenwood-suzanne/hot_METS.git
 
-Or you can copy the /homes/sgreenwood1/crossteam.R file to your own home directory on the comp bio server. When you run the pipeline, you will find plots outputted as files in your home directory (see Results).
-	
-	cp /homes/sgreenwood1/crossteam.R </homes/your_name>
   
 # Implementation:
    The pipeline will take in this directory for input and runs through the following major steps:
@@ -47,17 +42,20 @@ Or you can copy the /homes/sgreenwood1/crossteam.R file to your own home directo
    -Plotting with phyloseq: This portion is still being developed. It will output bar graphs of the taxonomic groups present in our
       two sample groups: Ghana and US for comparison.
 
-In order to run the pipeline through the command line, pass the path of your copy of the crossteam folder as an argument to be used as
-your working directory. The recommended command to run the script is: 
-			
-			nohup Rscript crossteam.R </homes/your_name/crossteam> &
-			
-The nuhup .. & is not *necessary* but it is helpful, because it will append the text output into one nohup.out file. Through that file
-you will be able to see all the text output from each individual step in the pipeline. This nohup.out file will be written to your home 
-directory. The plot images will appear as .png files in your home directory. 
+In order to run the pipeline through the command line your unix commands should follow this format:
+ 	
+	Rscript part1.R -f <your_directory_here>
 
-Please allow about 15 minutes for the pipeline to run. When nohup.out is opened, the last line should be the first few lines of the taxonomy table. We recommend opening the nohup.out file in RStudio where you can also open your image files without having to SCP them down.
-																																																																
+ 	Rscript part2.R -f <your_directory> -F <forward_filter_length> -R <reverse_filter_length> -T a<#nucls_to_trim_from_left>
+
+	 Rscript part3.R -f <your_directory_here>
+
+Part 2 must come before part 3, but part 1 is optional if the user already knows their desired filtering parameters. The flags (-char) are required. For help, try:
+	
+	Rscript part#.R -h
+
+
+
 # Results:																						
 The first few lines of the tables that are produced throughout the running of the pipeline can be viewed in the nohup.out file that
 will appear after running is complete.
