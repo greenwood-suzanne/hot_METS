@@ -5,4 +5,7 @@ It is meant to serve as sample data to ensure that all aspects of the METS pipel
 
 # Please Note:
 
-The silva v132 file and training set files are NOT included in this folder. They must be dowloaded and put into the working directory folder with all FASTQ input files. 
+The Silva v132 file and training set files are NOT included in this folder. They must be dowloaded and put into the working directory folder with all FASTQ input files. 
+
+The DADA2-formatted Silva training files can be found here:
+https://zenodo.org/record/1172783#.WtvfsWbMyu5
