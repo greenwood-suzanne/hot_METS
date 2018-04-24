@@ -147,15 +147,30 @@ library(ggplot2)
 
 now <- Sys.time()
 now
+print("Right version")
 print("Beginning comparison plotting...")
 
-#gets the location from the sample string
+#the variables for the sample data and the METS data are different. use the right chunk.
+
+####gets the location from the sample string FOR METS DATA####
+# samples.out <- rownames(seqtab.nochim)
+# subject <- sapply(strsplit(samples.out, "_S"), `[`, 1)
+# location <- substr(subject,21,26)
+# location <- gsub('-', '',location)
+# location <- gsub('O', 'H20',location)
+# location <- gsub('1USA', 'USA', location)
+
+####gets the location from the sample string FOR MISEQ SAMPLE DATA####
 samples.out <- rownames(seqtab.nochim)
-subject <- sapply(strsplit(samples.out, "_S"), `[`, 1)
-location <- substr(subject,21,26)
-location <- gsub('-', '',location)
-location <- gsub('O', 'H20',location)
-location <- gsub('1USA', 'USA', location)
+subject <- sapply(strsplit(samples.out, "D"), `[`, 1)
+gender <- substr(subject,1,1)
+subject <- substr(subject,2,999)
+day <- as.integer(sapply(strsplit(samples.out, "D"), `[`, 2))
+samdf <- data.frame(Subject=subject, Gender=gender, Day=day)
+samdf$When <- "Early"
+samdf$When[samdf$Day>100] <- "Late"
+rownames(samdf) <- samples.out
+
 
 #gets the sample number from the sample string
 sample_num <-substr(subject, 14, 16)
@@ -167,6 +182,9 @@ rownames(samdf) <- samples.out
 ps <- phyloseq(otu_table(seqtab.nochim, taxa_are_rows=FALSE), 
                sample_data(samdf), 
                tax_table(taxa))
+ps
+####Only applies to MiSeq samples; no mock group in Mets data####
+ps <- prune_samples(sample_names(ps) != "Mock", ps) # Remove mock sample
 ps
 
 print("Calculating alpha diversity...")
