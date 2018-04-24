@@ -26,6 +26,23 @@ phyloseq: https://joey711.github.io/phyloseq/install.html
 	
 ggplot2: http://ggplot2.org 
 
+# MiSeq Test Data
+To ensure that everything is downloaded and working properly:
+
+The MiSeq data that is available on this GitHub repository runs in only two parts.
+These are:
+
+Part I: Obtain read quality in order to choose filtering parameters. This cannoy be skipped, but only takes about 1 minute to run. 
+
+	Rscript part1.R -f <path_to_MiSeq_directory>
+
+Part II: Filter reads and obtain taxonomy plots
+
+	Rscript part2.R -f <path_to_MiSeq_directory> -F <forward read length desired> -R <reverse read length> -T <# nucleotides to trim from left>
+	
+Recommended filtering params: forward: 240 reverse: 160 trim: 0
+
+# Implementation
 	
 The pipeline is broken into 3 parts for ease of use. Each part can be run in the command line.
 
@@ -93,3 +110,5 @@ To run Part III:
 	Rscript part3.R -f <path_to_working_directory>
 
 The command looks very much like that for Part I. The various commands within Part III will change the working directory for the appropriate sub-directory as needed (i.e. filtered, Output)
+
+
