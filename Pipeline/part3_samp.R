@@ -27,7 +27,7 @@ now
 ####Here we have to again define fwd and reverse reads####
 path <- opt$file
 #the user should put their working directory in the command to run the script
-setwd(path)
+
 
 ####Process the rest of the arguments####
 print("Parameter list:")
