@@ -160,19 +160,18 @@ location <- gsub('1USA', 'USA', location)
 #gets the sample number from the sample string
 sample_num <-substr(subject, 14, 16)
 sample_num <- gsub('-', '',sample_num)
-samdf <- data.frame(Location = location, Sample = sample_num)
-rownames(samdf) <- samples.out
-samdf <- data.frame(Location = location, Sample = sample_num)
+samdf <- data.frame(Location = location, SampleName = sample_num)
 rownames(samdf) <- samples.out
 
 #a phylo seq object is created
 ps <- phyloseq(otu_table(seqtab.nochim, taxa_are_rows=FALSE), 
                sample_data(samdf), 
+               tax_table(taxa))
 ps
 
-print("Calculating alpha diversity...")
+print("Calculating alpha diversity...", width = 2000, height = 1200)
 png(filename = "Output/alpha_diversity.png")
-plot_richness(ps, x="Sample", measures=c("Shannon", "Simpson"), color="Location") + theme_bw() + theme(axis.text.x=element_text(angle=90,hjust=1))
+plot_richness(ps, x= "SampleName", measures=c("Shannon", "Simpson"), color="Location") + theme_bw() + theme(axis.text.x=element_text(angle=90,hjust=1))
 dev.off()
 print("alpha diversity plot saved to Output.")
 
@@ -191,14 +190,14 @@ ps.top20 <- transform_sample_counts(ps, function(OTU) OTU/sum(OTU))
 ps.top20 <- prune_taxa(top20, ps.top20)
 
 print("Creating family-level bar plot...")
-png(filename = "Output/familybarplot.png")
-plot_bar(ps.top20, x="Sample", fill="Family") + facet_wrap(~Location, scales="free_x")
+png(filename = "Output/familybarplot.png", width = 2000, height = 1200))
+plot_bar(ps.top20, x = "SampleName", fill="Family") + facet_wrap(~Location, scales="free_x") + theme(axis.text.x=element_text(angle=90,hjust=1))
 dev.off()
 print("Family-level bar plot saved to Output.")
 
 print("Creating species-level bar plot...")
 png(filename = "Output/speciesbarplot.png")
-plot_bar(ps.top20, x= "Sample", fill="Species") + facet_wrap(~Location, scales="free_x")
+plot_bar(ps.top20, x= "SampleName",, fill="Species") + facet_wrap(~Location, scales="free_x") + theme(axis.text.x=element_text(angle=90,hjust=1))
 dev.off()
 print("Species-level bar plot saved to Output.")
 
