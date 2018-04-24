@@ -29,7 +29,7 @@ Import this file from GitHub using:
    
    -Filter and trim the raw data: Remove PCR/Sequencing primers, exclude all N bases, exclude all reads with low PHRED scores.
       
-   -Evaluate errors: this is a step neessary for getting taxonomy information later on. outputs plots of error x quality. 
+   -Evaluate errors: this is a step neessary for getting taxonomy information later on. Outputs plots of error x quality. 
       (May take a few minutes)
       
    -Pull out just the unique sequences: Remove duplicates from our filtered data set
@@ -39,8 +39,8 @@ Import this file from GitHub using:
       
    -Remove chimeras: We want to have only properly matched forward and reverse reads 
       
-   -Plotting with phyloseq: This portion is still being developed. It will output bar graphs of the taxonomic groups present in our
-      two sample groups: Ghana and US for comparison.
+   -Plotting with phyloseq:  The output bar graphs are created for the taxonomic groups present in our
+      two sample groups: Ghana and US for comparison .
 
 In order to run the pipeline through the command line your unix commands should follow this format:
  	
