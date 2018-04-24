@@ -189,11 +189,10 @@ track <- cbind(out, sapply(dadaFs, getN), sapply(mergers, getN), rowSums(seqtab)
 # If processing a single sample, remove the sapply calls: e.g. replace sapply(dadaFs, getN) with getN(dadaFs)
 colnames(track) <- c("input", "filtered", "denoised", "merged", "tabled", "nochim")
 rownames(track) <- sample.names
-print( "Let's track the reads left after each step:" )
+print( "Make sure we're not losing too many reads:" )
 head(track)
 #show us how many reads we have for each file as we filter down
-write.table(track, "Output/tracker.txt", sep="\t")
-print("Tracker table is now in Output.")
+
 
 ####Assign Taxonomy####
 print("Assigning taxonomy...this will take a while.")
