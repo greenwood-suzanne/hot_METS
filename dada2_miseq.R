@@ -155,6 +155,7 @@ head(track)
 #show us how many reads we have for each file as we filter down
 
 ####Assign Taxonomy####
+setwd(path)
 taxa <- assignTaxonomy(seqtab.nochim, "silva_nr_v132_train_set.fa.gz", multithread=TRUE)
 #classify sequence variants taxonomically
 taxa <- addSpecies(taxa, "silva_species_assignment_v132.fa.gz")
