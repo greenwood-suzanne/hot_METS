@@ -125,7 +125,7 @@ errR <- learnErrors(filtRs, multithread=FALSE)
 setwd(path)
 png(filename= "Output/errF.png")
 plotErrors(errF, nominalQ=TRUE)
-#oints are the observed error rates for each consensus quality score. 
+#points are the observed error rates for each consensus quality score. 
 #The black line shows the estimated error rates after convergence.
 #The red line shows the error rates expected under the nominal definition of the Q-value. 
 dev.off()
@@ -183,17 +183,17 @@ sum(seqtab.nochim)/sum(seqtab)
 
 
 ####Track Reads Through Pipeline
-#getN <- function(x) sum(getUniques(x))
+getN <- function(x) sum(getUniques(x))
 
-# track <- cbind(out, sapply(dadaFs, getN), sapply(mergers, getN), rowSums(seqtab), rowSums(seqtab.nochim))
-# # If processing a single sample, remove the sapply calls: e.g. replace sapply(dadaFs, getN) with getN(dadaFs)
-# colnames(track) <- c("input", "filtered", "denoised", "merged", "tabled", "nochim")
-# rownames(track) <- sample.names
-# print( "Let's track the reads left after each step:" )
-# head(track)
-# #show us how many reads we have for each file as we filter down
-# write.table(track, "Output/tracker.txt", sep="\t")
-# print("Tracker table is now in Output.")
+track <- cbind(out, sapply(dadaFs, getN), sapply(mergers, getN), rowSums(seqtab), rowSums(seqtab.nochim))
+# If processing a single sample, remove the sapply calls: e.g. replace sapply(dadaFs, getN) with getN(dadaFs)
+colnames(track) <- c("input", "filtered", "denoised", "merged", "tabled", "nochim")
+rownames(track) <- sample.names
+print( "Let's track the reads left after each step:" )
+head(track)
+#show us how many reads we have for each file as we filter down
+write.table(track, "Output/tracker.txt", sep="\t")
+print("Tracker table is now in Output.")
 
 ####Assign Taxonomy####
 print("Assigning taxonomy...this will take a while.")
@@ -218,7 +218,7 @@ library(ggplot2)
 
 now <- Sys.time()
 now
-print("Right version")
+
 print("Beginning comparison plotting...")
 
 #the variables for the sample data and the METS data are different. use the right file.
@@ -269,7 +269,7 @@ print("Family-level bar plot saved to Output.")
 
 print("Creating species-level bar plot...")
 png(filename = "Output/speciesbarplot.png")
-plot_bar(ps.top20, x="Day", fill="Species") + facet_wrap(~When, scales="free_x") + theme(axis.text.x=element_text(angle=90,hjust=1))
+plot_bar(ps.top20, x="Day", fill="Species") + facet_wrap(~When, scales="free_x") 
 dev.off()
 print("Species-level bar plot saved to Output.")
 
