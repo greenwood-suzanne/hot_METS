@@ -90,9 +90,9 @@ dev.off()
 print("Filtered reverse read quality profile now available in 'Output' subdirectory.")
 
 ####Examine errors####
-errF <- learnErrors(filtFs, multithread=TRUE)
+errF <- learnErrors(filtFs, multithread=FALSE)
 #tells us how amny unique reads we have in each sample
-errR <- learnErrors(filtRs, multithread=TRUE)
+errR <- learnErrors(filtRs, multithread=FALSE)
 
 plotErrors(errF, nominalQ=TRUE)
 #oints are the observed error rates for each consensus quality score. 
@@ -116,9 +116,9 @@ names(derepRs) <- sample.names
 #when we go back, there will be reverse steps too
 
 ####denoising####
-dadaFs <- dada(derepFs, err=errF, multithread=TRUE)
+dadaFs <- dada(derepFs, err=errF, multithread=FALSE)
 #get sequence variants from each sample
-dadaRs <- dada(derepRs, err=errR, multithread=TRUE)
+dadaRs <- dada(derepRs, err=errR, multithread=FALSE)
 #do the same for the reverse set
 dadaFs[[1]]
 
@@ -139,7 +139,7 @@ table(nchar(getSequences(seqtab)))
 #were only getting sample #170 wiht 2518 variants
 
 ####Remove Chimeras####
-seqtab.nochim <- removeBimeraDenovo(seqtab, method="consensus", multithread=TRUE, verbose=TRUE)
+seqtab.nochim <- removeBimeraDenovo(seqtab, method="consensus", multithread=FALSE, verbose=TRUE)
 dim(seqtab.nochim) #slightly high
 sum(seqtab.nochim)/sum(seqtab) #slightly low
 
@@ -157,7 +157,7 @@ head(track)
 
 ####Assign Taxonomy####
 setwd(path)
-taxa <- assignTaxonomy(seqtab.nochim, "silva_nr_v132_train_set.fa.gz", multithread=TRUE)
+taxa <- assignTaxonomy(seqtab.nochim, "silva_nr_v132_train_set.fa.gz", multithread=FALSE)
 #classify sequence variants taxonomically
 taxa <- addSpecies(taxa, "silva_species_assignment_v132.fa.gz")
 #add species level assignments by exact matching
