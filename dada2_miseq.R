@@ -1,8 +1,45 @@
 library(dada2)
-packageVersion("dada2") 
+library(optparse)
+
+
+option_list = list(
+  make_option(c("-f", "--file"), type="character", default=NULL, 
+              help="Path to working directory folder", metavar="character"),
+  make_option(c("-F", "--For"), type="character", default=320, 
+              help="Forward read length", metavar="character"),
+  make_option(c("-R", "--Rev"), type="character", default=220, 
+              help="Reverse read length", metavar="character"),
+  make_option(c("-T", "--TrimL"), type="character", default=15, 
+              help="Primer nucleotides trimmed", metavar="character")
+); 
+
+opt_parser = OptionParser(option_list=option_list);
+opt = parse_args(opt_parser);
+
+if (is.null(opt$file)){
+  print_help(opt_parser)
+  stop("At least one argument must be supplied (input file).\n", call.=FALSE)
+}
+
+now <- Sys.time()
+now
+
+####Process the rest of the arguments####
+print("Parameter list:")
+sprintf("Forward read length: %s", opt$For)
+sprintf("Reverse read length: %s", opt$Rev)
+sprintf("Primer nucleotides trimmed: %s", opt$trimL)
+
+#the arguments are:
+  #1: working directory path; WHOLE PATH
+  #2: desired forward read length
+  #3: desired reverse read length
+  #4: how many nucls to trim from the L. ATM that is the same nmber on fwd and rev
 
 ####Here we grab our files and set up lists of forward and reverse reads####
-path = "/homes/sgreenwood1/MiSeq_SOP"
+#path = "/homes/sgreenwood1/MiSeq_SOP"
+path <- opt$file
+setwd(path)
 list.files(path)
 fnFs = sort(list.files(path, pattern= "R1_001.fastq", full.names = TRUE))
 fnRs = sort(list.files(path, pattern= "R2_001.fastq", full.names = TRUE))
@@ -17,11 +54,6 @@ png(filename = "Output/Rqual.png")
 plotQualityProfile(fnRs)
 dev.off()
  
-#fairly decent quality. prob can trim at about last ten bases
-
-plotQualityProfile(fnRs)
-#the reverse read quality isnt great. Cut after 160
-
 ####Assign the filenames for filtered fastq.gz files####
 filt_path <- file.path(path, "filtered") 
 # Place filtered files in filtered/ subdirectory
@@ -35,7 +67,9 @@ print("Filtered files will appear in 'Filtered' subdirectory.")
 print("Now filtering reads...")
 
 ####Now we filter####
-out = filterAndTrim(fnFs, filtFs, fnRs, filtRs, truncQ= 2, truncLen = 240, 160, maxN=0, maxEE=c(2,2), rm.phix=TRUE,compress=TRUE, multithread=TRUE) 
+out <- filterAndTrim(fnFs, filtFs, fnRs, filtRs, truncLen=c(as.integer(opt$For),as.integer(opt$Rev)),
+                     maxN=0, maxEE=c(2,2), truncQ=2, rm.phix=TRUE,
+                     compress=TRUE, multithread=FALSE, trimLeft=c(as.integer(opt$TrimL),as.integer(opt$TrimL)), matchIDs=TRUE)
 #out is a table displaying the file name, number of reads to start with
 #and number of reads after truncating at the given positions (240 on forward and 160 on reverse to keep scores above 20)
 print("Filtered. Here's the first few files' reads: ")
@@ -196,3 +230,5 @@ plot_bar(ps.top20, x="Day", fill="Species") + facet_wrap(~When, scales="free_x")
 dev.off()
                                     
 print("All done!")                                  
+now <- Sys.time()
+now
