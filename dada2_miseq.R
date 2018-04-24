@@ -40,6 +40,7 @@ sprintf("Primer nucleotides trimmed: %s", opt$trimL)
 #path = "/homes/sgreenwood1/MiSeq_SOP"
 path <- opt$file
 setwd(path)
+dir.create("Output")
 list.files(path)
 fnFs = sort(list.files(path, pattern= "R1_001.fastq", full.names = TRUE))
 fnRs = sort(list.files(path, pattern= "R2_001.fastq", full.names = TRUE))
