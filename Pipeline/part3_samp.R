@@ -240,11 +240,11 @@ ps <- phyloseq(otu_table(seqtab.nochim, taxa_are_rows=FALSE), sample_data(samdf)
 ps
 ####no mock group in Mets data####
 
-print("Calculating alpha diversity...")
-png(filename = "Output/alpha_diversity.png")
-plot_richness(ps, x= "SampleName", measures=c("Shannon", "Simpson"), color="When") + theme_bw() + theme(axis.text.x=element_text(angle=90,hjust=1))
-dev.off()
-print("alpha diversity plot saved to Output.")
+#print("Calculating alpha diversity...")
+#png(filename = "Output/alpha_diversity.png")
+#plot_richness(ps, x= "SampleName", measures=c("Shannon", "Simpson"), color="When") + theme_bw() + theme(axis.text.x=element_text(angle=90,hjust=1))
+#dev.off()
+#print("alpha diversity plot saved to Output.")
 
 #ords.nmds.bray <- ordinate(ps, method = "NMDS", distance = "bray")
 #print("Creating ordination plot...")
