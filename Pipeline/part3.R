@@ -169,8 +169,8 @@ ps <- phyloseq(otu_table(seqtab.nochim, taxa_are_rows=FALSE),
                tax_table(taxa))
 ps
 
-print("Calculating alpha diversity...", width = 2000, height = 1200)
-png(filename = "Output/alpha_diversity.png")
+print("Calculating alpha diversity...")
+png(filename = "Output/alpha_diversity.png", width = 2000, height = 1200)
 plot_richness(ps, x= "SampleName", measures=c("Shannon", "Simpson"), color="Location") + theme_bw() + theme(axis.text.x=element_text(angle=90,hjust=1))
 dev.off()
 print("alpha diversity plot saved to Output.")
