@@ -27,7 +27,7 @@ args = commandArgs(trailingOnly = TRUE)
 path <- args[1]
 #the user should put their working directory in the command to run the script
 #path = "/homes/sgreenwood1/crossteam"
-setwd(path)
+
 
 print("Here is what we're working with: ")
 list.files(path)
