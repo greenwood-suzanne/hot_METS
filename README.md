@@ -40,7 +40,7 @@ Import this file from GitHub using:
    -Remove chimeras: We want to have only properly matched forward and reverse reads 
       
    -Plotting with phyloseq:  The output bar graphs are created for the taxonomic groups present in our
-      two sample groups: Ghana and US for comparison .
+      two sample groups: Ghana and US for comparison
 
 In order to run the pipeline through the command line your unix commands should follow this format:
  	
