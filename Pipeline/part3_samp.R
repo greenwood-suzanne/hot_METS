@@ -164,12 +164,6 @@ samdf$When[samdf$Day>100] <- "Late"
 rownames(samdf) <- samples.out
 
 
-#gets the sample number from the sample string
-sample_num <-substr(subject, 14, 16)
-sample_num <- gsub('-', '',sample_num)
-samdf <- data.frame(Location = location, SampleName = sample_num)
-rownames(samdf) <- samples.out
-
 #a phylo seq object is created
 ps <- phyloseq(otu_table(seqtab.nochim, taxa_are_rows=FALSE), 
                sample_data(samdf), 
