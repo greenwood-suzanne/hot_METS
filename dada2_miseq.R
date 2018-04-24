@@ -8,11 +8,18 @@ fnFs = sort(list.files(path, pattern= "R1_001.fastq", full.names = TRUE))
 fnRs = sort(list.files(path, pattern= "R2_001.fastq", full.names = TRUE))
 sample.names = sapply(strsplit(basename(fnFs), "_"), `[`, 1)
 
-###Next we take a look at quality###
-plotQualityProfile(fnFs[1:2]) 
+###Next we take a look at raw quality###
+png(filename = "Output/Fqual.png")
+plotQualityProfile(fnFs)
+dev.off()
+
+png(filename = "Output/Rqual.png")
+plotQualityProfile(fnRs)
+dev.off()
+ 
 #fairly decent quality. prob can trim at about last ten bases
 
-plotQualityProfile(fnRs[1:2])
+plotQualityProfile(fnRs)
 #the reverse read quality isnt great. Cut after 160
 
 ####Assign the filenames for filtered fastq.gz files####
@@ -23,13 +30,29 @@ filtFs <- file.path(filt_path, paste0(sample.names, "_F_filt.fastq.gz"))
 filtRs <- file.path(filt_path, paste0(sample.names, "_R_filt.fastq.gz"))
 #filtered reverses
 
+print("Filtered files will appear in 'Filtered' subdirectory.")
+
+print("Now filtering reads...")
+
 ####Now we filter####
 out = filterAndTrim(fnFs, filtFs, fnRs, filtRs, truncQ= 2, truncLen = 240, 160, maxN=0, maxEE=c(2,2), rm.phix=TRUE,compress=TRUE, multithread=TRUE) 
 #out is a table displaying the file name, number of reads to start with
 #and number of reads after truncating at the given positions (240 on forward and 160 on reverse to keep scores above 20)
+print("Filtered. Here's the first few files' reads: ")
 head(out)
 #prints the first few rows showing the original read counts next to the filtered counts
 
+#now we look at filtered quality
+print("Now generating filtered read quality plots...")
+png(filename = "Output/filtFqual.png")
+plotQualityProfile(filtFs) 
+dev.off()
+print("Filtered forward read quality profile now available in 'Output' subdirectory.")
+
+png(filename = "Output/filtRqual.png")
+plotQualityProfile(filtRs) 
+dev.off()
+print("Filtered reverse read quality profile now available in 'Output' subdirectory.")
 
 ####Examine errors####
 errF <- learnErrors(filtFs, multithread=TRUE)
@@ -93,13 +116,14 @@ track <- cbind(out, sapply(dadaFs, getN), sapply(mergers, getN), rowSums(seqtab)
 # If processing a single sample, remove the sapply calls: e.g. replace sapply(dadaFs, getN) with getN(dadaFs)
 colnames(track) <- c("input", "filtered", "denoised", "merged", "tabled", "nonchim")
 rownames(track) <- sample.names
+print("This is the number of reads after each step  so far:")
 head(track)
 #show us how many reads we have for each file as we filter down
 
 ####Assign Taxonomy####
 taxa <- assignTaxonomy(seqtab.nochim, "silva_nr_v132_train_set.fa.gz", multithread=TRUE)
 #classify sequence variants taxonomically
-#taxa <- addSpecies(taxa, "silva_species_assignment_v132.fa.gz")
+taxa <- addSpecies(taxa, "silva_species_assignment_v132.fa.gz")
 #add species level assignments by exact matching
 #error encountered
 
@@ -107,6 +131,7 @@ taxa <- assignTaxonomy(seqtab.nochim, "silva_nr_v132_train_set.fa.gz", multithre
 taxa.print <- taxa # Removing sequence rownames for display only
 rownames(taxa.print) <- NULL
 head(taxa.print)
+write.table("Output/taxonomy.txt", sep="\t") #save the taxonomy table to output folder
 #display the taxon info
 
 ####Evaluate Accuracy####
@@ -114,14 +139,11 @@ unqs.mock <- seqtab.nochim["Mock",]
 unqs.mock <- sort(unqs.mock[unqs.mock>0], decreasing=TRUE) # Drop ASVs absent in the Mock
 cat("DADA2 inferred", length(unqs.mock), "sample sequences present in the Mock community.\n")
 
-#lets investigate the mock community to set up something to compare to
-#21/20 sequences found
+#lets investigate the mock community 
 
 mock.ref <- getSequences(file.path(path, "HMP_MOCK.v35.fasta"))
 match.ref <- sum(sapply(names(unqs.mock), function(x) any(grepl(x, mock.ref))))
 cat("Of those,", sum(match.ref), "were exact matches to the expected reference sequences.\n")
-#0 matches is 100% error rate?
-
 
 
 ####PHYLOSEQ PORTION####
@@ -149,12 +171,28 @@ ps <- prune_samples(sample_names(ps) != "Mock", ps) # Remove mock sample
 ps
 
 #alpha diversity
+print("Plotting alpha diversity...")
+png(filename= "Output/alphadiversity.png")                        
 plot_richness(ps, x="Day", measures=c("Shannon", "Simpson"), color="When") + theme_bw()
+dev.off()
+                        
 ord.nmds.bray <- ordinate(ps, method="NMDS", distance="bray")
+png(filename= "Output/ordination.png")                        
 plot_ordination(ps, ord.nmds.bray, color="When", title="Bray NMDS")
+dev.off()                        
 
 #taxonomy distribution plot:
 top20 <- names(sort(taxa_sums(ps), decreasing=TRUE))[1:20]
 ps.top20 <- transform_sample_counts(ps, function(OTU) OTU/sum(OTU))
 ps.top20 <- prune_taxa(top20, ps.top20)
+print("Plotting family level taxonomy: ")     
+png(filename= "Output/family.png")                                    
 plot_bar(ps.top20, x="Day", fill="Family") + facet_wrap(~When, scales="free_x")
+dev.off()                                    
+                                    
+print("Plotting species level taxonomy: ") 
+png(filename= "Output/species.png")                                    
+plot_bar(ps.top20, x="Day", fill="Species") + facet_wrap(~When, scales="free_x")   
+dev.off()
+                                    
+print("All done!")                                  
