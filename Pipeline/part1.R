@@ -28,7 +28,7 @@ path <- opt$file
 #the user should put their working directory in the command to run the script
 #path = "/homes/sgreenwood1/crossteam"
 
-
+setwd(path)
 print("Here is what we're working with: ")
 list.files(path)
 #this lets us see the contents of the working directory to make sure we're looking at the right
@@ -48,7 +48,7 @@ sample.names = sapply(strsplit(basename(fnFs), "_"), `[`, 1)
 print("Assessing read quality.")
 
 png(filename = "Output/fqual.png")
-plotQualityProfile(fnFs) #some trash reads but most are alright
+plotQualityProfile(fnFs) 
 #plots the quality profiles for all forward reads and outputs to Output
 dev.off()
 
