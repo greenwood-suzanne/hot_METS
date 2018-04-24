@@ -24,7 +24,7 @@ now
 
 ####Getting Set Up####
 args = commandArgs(trailingOnly = TRUE)
-path <- args[1]
+path <- opt$file
 #the user should put their working directory in the command to run the script
 #path = "/homes/sgreenwood1/crossteam"
 
