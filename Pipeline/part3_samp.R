@@ -180,7 +180,7 @@ ps <- prune_samples(sample_names(ps) != "Mock", ps) # Remove mock sample
 ps
 
 print("Calculating alpha diversity...")
-png(filename = "Output/alpha_diversity.png", width = 2000, height = 1200)
+png(filename = "Output/alpha_diversity.png")
 plot_richness(ps, x= "SampleName", measures=c("Shannon", "Simpson"), color="Location") + theme_bw() + theme(axis.text.x=element_text(angle=90,hjust=1))
 dev.off()
 print("alpha diversity plot saved to Output.")
@@ -201,7 +201,7 @@ ps.top20 <- prune_taxa(top20, ps.top20)
 
 
 print("Creating family-level bar plot...")
-png(filename = "Output/familybarplot.png", width = 2000, height = 1200))
+png(filename = "Output/familybarplot.png")
 plot_bar(ps.top20, x="Day", fill="Family") + facet_wrap(~When, scales="free_x") + theme(axis.text.x=element_text(angle=90,hjust=1))
 dev.off()
 print("Family-level bar plot saved to Output.")
