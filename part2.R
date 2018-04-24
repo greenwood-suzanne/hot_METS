@@ -58,7 +58,7 @@ print("Now filtering reads...")
 
 
 ####Now we filter####
-out <- filterAndTrim(fnFs, filtFs, fnRs, filtRs, truncLen=c(opt$For,opt$Rev),
+out <- filterAndTrim(fnFs, filtFs, fnRs, filtRs, truncLen=c(as.integer(opt$For),as.integer(opt$Rev)),
                      maxN=0, maxEE=c(2,2), truncQ=2, rm.phix=TRUE,
                      compress=TRUE, multithread=FALSE, trimLeft=c(as.integer(opt$TrimL),as.integer(opt$TrimL)), matchIDs=TRUE) 
 #out is a table displaying the file name, number of reads to start with
