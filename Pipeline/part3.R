@@ -208,7 +208,7 @@ ps.top20 <- transform_sample_counts(ps, function(OTU) OTU/sum(OTU))
 ps.top20 <- prune_taxa(top20, ps.top20)
 
 print("Creating family-level bar plot...")
-png(filename = "Output/familybarplot.png", width = 2000, height = 1200))
+png(filename = "Output/familybarplot.png", width = 2000, height = 1200)
 plot_bar(ps.top20, x = "SampleName", fill="Family") + facet_wrap(~Location, scales="free_x") + theme(axis.text.x=element_text(angle=90,hjust=1))
 dev.off()
 print("Family-level bar plot saved to Output.")
