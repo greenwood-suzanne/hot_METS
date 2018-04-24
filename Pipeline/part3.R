@@ -215,7 +215,7 @@ print("Family-level bar plot saved to Output.")
 
 print("Creating species-level bar plot...")
 png(filename = "Output/speciesbarplot.png")
-plot_bar(ps.top20, x= "SampleName",, fill="Species") + facet_wrap(~Location, scales="free_x") + theme(axis.text.x=element_text(angle=90,hjust=1))
+plot_bar(ps.top20, x= "SampleName", fill="Species") + facet_wrap(~Location, scales="free_x") + theme(axis.text.x=element_text(angle=90,hjust=1))
 dev.off()
 print("Species-level bar plot saved to Output.")
 
