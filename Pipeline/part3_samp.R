@@ -175,9 +175,7 @@ ps <- phyloseq(otu_table(seqtab.nochim, taxa_are_rows=FALSE),
                sample_data(samdf), 
                tax_table(taxa))
 ps
-####Only applies to MiSeq samples; no mock group in Mets data####
-ps <- prune_samples(sample_names(ps) != "Mock", ps) # Remove mock sample
-ps
+####no mock group in Mets data####
 
 print("Calculating alpha diversity...")
 png(filename = "Output/alpha_diversity.png")
