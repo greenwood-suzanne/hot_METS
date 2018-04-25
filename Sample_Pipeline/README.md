@@ -47,7 +47,7 @@ for help, type:
 If raw sequencing read quality is already known, and desired filtering parameters are known,  Part I can be skipped.
 
 
-# Part II: 
+# Parts II and III: 
 Part II filters and trims the reads in all files, outputs quality profiles for the filtered data, and creates a new folder within the working directory called Filtered which contains the filtered reads.
 	Output files are in .png or .txt formats and will again appear in the Output folder.
 	Output file names: filtFqual.png -- quality profile of filtered forward files
