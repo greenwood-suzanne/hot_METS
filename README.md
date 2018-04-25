@@ -2,20 +2,24 @@
 Group Repo for CompBio METS project
 
 # Introduction:
-  This is the METS project, a pipeline for microbiome analysis that can be run in the command line. 
+  The following file provides information regarding implementation and requirements for the METS project, a pipeline for terminal-based microbiome analysis. 
   
   
-  # Requirements:
-  -Sample data as well as the Silva v132 database files. 
-  The sample data is in the MiSeq_SOP folder on this repository; the links to the Silva files can be found in the readme of the MiSeq_SOP folder.
-  -Use the R scripts in the Sample_Pipeline folder to run the sample data set.
-  -The METS Pipeline folder contains the same files as Sample_Pipeline, but variables are set specifically for the METS data (which are not published on this repository).
+# Requirements:
+  -Sample data 
+  	*located in the MiSeq_SOP folder on this repository
+  -Silva v132 database files. 
+  	*DADA2-formatted Silva training files can be found at: https://zenodo.org/record/1172783#.WtvfsWbMyu5
+  -Scripts 'part1.R' and 'part2_miseq.R'
+  	*located in 'Sample_Pipeline' folder
+	
+  *The METS Pipeline folder contains the same files as Sample_Pipeline, however input parameters have been specifically ammended for the METS data (not published in repository due to size constraints).
   
           
 # Software Requirements:
-This pipeline can be run as a series of Rscripts through command line. The required packages are:
+The pipeline can be run as a series of R scripts through the command line. The required packages include:
 
- dada2: https://benjjneb.github.io/dada2/dada-installation.html
+dada2: https://benjjneb.github.io/dada2/dada-installation.html
 	
 phyloseq: https://joey711.github.io/phyloseq/install.html 
 
@@ -23,7 +27,8 @@ ggplot2: http://ggplot2.org
 	
 
 # To Import from GitHub:
-The pipeline can be cloned from:
+In addition to the crossteam directory (see Introduction) you will need the crossteam.R file to run the pipeline. 
+Import this file from GitHub using:
 
 	git clone https://github.com/greenwood-suzanne/hot_METS.git
 
@@ -31,61 +36,66 @@ The pipeline can be cloned from:
 
   
 # Implementation:
-   The pipeline will take in this directory for input and runs through the following major steps:
+   The pipeline will input in the specified folder directory containing your FASTQ reads and will perform the following major steps:
    
    Part I:
    -Evaluate quality of raw data
    
    Part II:
-   -Filter and trim the raw data: Remove PCR/Sequencing primers, exclude all N bases, exclude all reads with low PHRED scores.  
-   -Evaluate errors: this is a step neessary for getting taxonomy information later on. Outputs plots of error x quality. 
-      (May take a few minutes)  
-   -Pull out just the unique sequences: Remove duplicates from our filtered data set
-   -Merge the paired reads: Here we combine the forward and reverse reads so that we can ascertain taxonomy information 
+   -Filter and trim the raw data: Removes PCR/Sequencing primers, excluding all N bases and all reads with PHRED scores below specified threshold.
+   
+   -Evaluate errors: neessary for the acquisition of taxonomy information in latter steps. Outputs plots of error x quality. 
+      (May take a few minutes) 
+      
+   -Sort out only unique sequences: removes duplicates from filtered data set
+   
+   -Merge paired reads: combines the forward and reverse reads to prepare for the ascertainment of taxonomy information 
       in subsequent steps
-   -Remove chimeras: We want to have only properly matched forward and reverse reads 
+      
+   -Remove chimeras: isolates properly-paired forward and reverse reads 
    
    Part III:
-   -Plotting with phyloseq:  The output bar graphs are created for the taxonomic groups present in our
-      two sample groups: Ghana and US for comparison
+   -Plot with Phyloseq: creates bar-graph output for the taxonomic groups present in the
+      two-sample groups (Ghana and US for comparison)
 
-In order to run the pipeline through the command line your unix commands should follow this format:
+In order to run the pipeline through the command line, the Unix commands should follow this format:
  	
-	Rscript part1.R -f <your_directory_here>
+	Rscript part1.R 
+	-f <working_directory_folder>
 
- 	Rscript part2and3.R -f <your_directory> -F <forward_filter_length> -R <reverse_filter_length> -T a<#nucls_to_trim_from_left>
+ 	Rscript part2and3.R 
+	-f <working_directory_folder> 
+	-F <forward_filter_length> 
+	-R <reverse_filter_length> 
+	-T <#nucls_to_trim_from_left>
 	
 *For MiSeq_SOP sample data, we recommend using -F 240 -R 160 -T 0
 
-For help, try:
+For assistance, please consult the 'help' prompt:
 	
 	Rscript part#.R -h
 
 
 # Results:																						
-Only the first few lines of the tables will be displayed in the terminal. All plots are saved as .png files in a folder called 'Output' within the provided working directory. These are as follows:
+Only the first few lines of the tables will be displayed in the terminal. All plots are saved as .png files in a folder titled 'Output' within the specified working directory. The graphical output is as follows:
 
 	Tables:
-		-out: out is a table that summarizes the number of reads in each file before and after filtering by PHRED score, 
-		removing Ns and removing primers.
-		-seqtab: probably not useful to look at for this activity; lists occurances of reads in each file
-		-seqtab.nochim: same as seqtab but with chimeras removed. 
-		-track: track is a table that shows you how many reads are in each file after each step of the pipeline. 
-		Recall that each of the steps that make up the columns of the table are removing "bad" reads whether they be
-		full of N bases, duplicates, or contain chimeras.
-		-taxa: preliminary taxonomy table. Will likely take several minutes to run.
-		-taxa.print: taxonomy table adjusted for display. This contains all the taxonomy information we are able to obtain
-		from checking against the silva version 132 database.
+		-out: table summarizing the number of reads in each file before and after filtering by PHRED score and after 		the removal of Ns and primers
+		-seqtab: list containing reads occurances in each file
+		-seqtab.nochim: seqtab without chimeras 
+		-track: table displaying frequency of reads in each file after each operation of the pipeline 
+		(Each step should display a decrease in reads, as low quality data is truncated from the original dataset.)
+		-taxa: preliminary taxonomy table - (will likely require several minutes to run)
+		-taxa.print: taxonomy table from alignment with Silva v. 132 database - (adjusted for display)
 					
 	PNG Files:
-		*note: If there is trouble viewing the image files, RStudio is a nice option. Simply navigate to your home directory 
-		under the files tab on the right hand side of the screen. There you should see your copy of the crossteam directory and
-		all the .png files among your documents. There is also the option of SCP-ing the images to your own computer for viewing.
 		-filtFqual.png: qualilty plot of forward reads after filtering
 		-filtRqual.png: qualilty plot of reverse reads after filtering
 		-fqual.png: qualilty plot of forward reads before filtering
 		-Rqual.png: qualilty plot of reverse reads before filtering
 		-familybarplot.png: taxonomy bar plot on family-level
+		
+		*note: If issues arise while attempting to view image files, RStudio provides a user-friendly graphical interface. Simply navigate to the home directory under the files tab on the right-hand side of the screen. There one can view a copy of the provided directory and all .png images associated with the input files. Images can also be copied to one's personal terminal using the Unix command 'scp'.
 			
-You will notice a new subdirectory "filtered" within your crossteam directory. This contains the filtered files. 
-All of your raw data files are unchanged; all filtering/denoising/dereplicating, etc. was done within the filtered subdirectory.
+A new subdirectory "filtered" will be created within the specified working directory, containing the filtered reads. 
+All of original raw data files remain unaltered; all filtering/denoising/dereplicating, etc. was performed within the '~/filtered' subdirectory.
