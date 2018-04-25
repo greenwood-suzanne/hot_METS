@@ -31,18 +31,6 @@ path <- opt$file
 #the user should put their working directory in the command to run the script
 setwd(path)
 
-####Process the rest of the arguments####
-#print("Parameter list:")
-#sprintf("Forward read length: %s", opt$For)
-#sprintf("Reverse read length: %s", opt$Rev)
-#sprintf("Primer nucleotides trimmed: %s", opt$trimL)
-
-#the arguments are:
-#1: working directory path; WHOLE PATH
-#2: desired forward read length
-#3: desired reverse read length
-#4: how many nucls to trim from the L. ATM that is the same nmber on fwd and rev
-
 #raw files
 fnFs = sort(list.files(path, pattern= "R1_001.fastq", full.names = TRUE))
 fnRs = sort(list.files(path, pattern= "R2_001.fastq", full.names = TRUE))
