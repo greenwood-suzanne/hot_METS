@@ -266,12 +266,6 @@ plot_bar(ps.top20, x="Day", fill="Family") + facet_wrap(~When, scales="free_x") 
 dev.off()
 print("Family-level bar plot saved to Output.")
 
-print("Creating species-level bar plot...")
-png(filename = "Output/speciesbarplot.png")
-plot_bar(ps.top20, x="Day", fill="Species") + facet_wrap(~When, scales="free_x") 
-dev.off()
-print("Species-level bar plot saved to Output.")
-
 now <- Sys.time()
 now
 
