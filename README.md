@@ -2,7 +2,14 @@
 Group Repo for CompBio METS project
 
 # Introduction:
-  This is the METS project, a pipeline for microbiome analysis that can be run in the command line. It comes in 3 parts, all of which are contained in the Pipeline folder of this repository. You will need sample data to ensure that you have correctly installed all dependencies as well as the Silva v132 database files. These are also available in this repository. 
+  This is the METS project, a pipeline for microbiome analysis that can be run in the command line. 
+  
+  
+  # Requirements:
+  -Sample data as well as the Silva v132 database files. 
+  The sample data is in the MiSeq_SOP folder on this repository; the links to the Silva files can be found in the readme of the MiSeq_SOP folder.
+  -Use the R scripts in the Sample_Pipeline folder to run the sample data set.
+  -The METS Pipeline folder contains the same files as Sample_Pipeline, but variables are set specifically for the METS data (which are not published on this repository).
   
           
 # Software Requirements:
@@ -27,18 +34,19 @@ Import this file from GitHub using:
 # Implementation:
    The pipeline will take in this directory for input and runs through the following major steps:
    
-   -Filter and trim the raw data: Remove PCR/Sequencing primers, exclude all N bases, exclude all reads with low PHRED scores.
-      
+   Part I:
+   -Evaluate quality of raw data
+   
+   Part II:
+   -Filter and trim the raw data: Remove PCR/Sequencing primers, exclude all N bases, exclude all reads with low PHRED scores.  
    -Evaluate errors: this is a step neessary for getting taxonomy information later on. Outputs plots of error x quality. 
-      (May take a few minutes)
-      
+      (May take a few minutes)  
    -Pull out just the unique sequences: Remove duplicates from our filtered data set
-      
    -Merge the paired reads: Here we combine the forward and reverse reads so that we can ascertain taxonomy information 
       in subsequent steps
-      
    -Remove chimeras: We want to have only properly matched forward and reverse reads 
-      
+   
+   Part III:
    -Plotting with phyloseq:  The output bar graphs are created for the taxonomic groups present in our
       two sample groups: Ghana and US for comparison
 
@@ -46,19 +54,17 @@ In order to run the pipeline through the command line your unix commands should 
  	
 	Rscript part1.R -f <your_directory_here>
 
- 	Rscript part2.R -f <your_directory> -F <forward_filter_length> -R <reverse_filter_length> -T a<#nucls_to_trim_from_left>
+ 	Rscript part2and3.R -f <your_directory> -F <forward_filter_length> -R <reverse_filter_length> -T a<#nucls_to_trim_from_left>
+	
+*For MiSeq_SOP sample data, we recommend using -F 240 -R 160 -T 0
 
-	 Rscript part3.R -f <your_directory_here>
-
-Part 2 must come before part 3, but part 1 is optional if the user already knows their desired filtering parameters. The flags (-char) are required. For help, try:
+For help, try:
 	
 	Rscript part#.R -h
 
 
-
 # Results:																						
-The first few lines of the tables that are produced throughout the running of the pipeline can be viewed in the nohup.out file that
-will appear after running is complete.
+Only the first few lines of the tables will be displayed in the terminal. All plots are saved as .png files in a folder called 'Output' within the provided working directory. These are as follows:
 
 	Tables:
 		-out: out is a table that summarizes the number of reads in each file before and after filtering by PHRED score, 
@@ -71,7 +77,7 @@ will appear after running is complete.
 		-taxa: preliminary taxonomy table. Will likely take several minutes to run.
 		-taxa.print: taxonomy table adjusted for display. This contains all the taxonomy information we are able to obtain
 		from checking against the silva version 132 database.
-			
+					
 	PNG Files:
 		*note: If there is trouble viewing the image files, RStudio is a nice option. Simply navigate to your home directory 
 		under the files tab on the right hand side of the screen. There you should see your copy of the crossteam directory and
