@@ -1,4 +1,4 @@
-# METS Pipeline
+# Sample Pipeline
 
 Suzanne Greenwood, Christina Printzis, Nathaniel Polley
 
