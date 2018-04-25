@@ -70,8 +70,7 @@ print("Finished filtering. Here's what the filtered files look like:  ")
 
 head(out)
 #prints the first few rows showing the original read counts next to the filtered counts
-write.table(out, "Output/filteredandtrimmed.txt", sep="\t")
-#out table saved to txt file. little ugly but does the trick
+
 
 ####Output filtered read quality####
 print("Now generating filtered read quality plots...")
@@ -237,7 +236,7 @@ rownames(samdf) <- samples.out
 #a phylo seq object is created
 ps <- phyloseq(otu_table(seqtab.nochim, taxa_are_rows=FALSE), sample_data(samdf), tax_table(taxa))
 ps
-####no mock group in Mets data####
+
 
 #print("Calculating alpha diversity...")
 #png(filename = "Output/alpha_diversity.png")
@@ -255,6 +254,7 @@ ps
 now <- Sys.time()
 now
 
+#we only want to plot 20 samples for redability of the plot
 top20 <- names(sort(taxa_sums(ps), decreasing=TRUE))[1:20]
 ps.top20 <- transform_sample_counts(ps, function(OTU) OTU/sum(OTU))
 ps.top20 <- prune_taxa(top20, ps.top20)
