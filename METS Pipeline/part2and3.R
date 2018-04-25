@@ -233,13 +233,6 @@ plot_richness(ps, x= "SampleName", measures=c("Shannon", "Simpson"), color="Loca
 dev.off()
 print("alpha diversity plot saved to Output.")
 
-#ords.nmds.bray <- ordinate(ps, method = "NMDS", distance = "bray")
-#print("Creating ordination plot...")
-#png(filename = "Output/ordination.png")
-#plot_ordination(ps, ord.nmds.bray, color="Sample", title="Bray NMDS")
-#dev.off()
-#print("Ordination plot saved to Output.")
-
 now <- Sys.time()
 now
 
