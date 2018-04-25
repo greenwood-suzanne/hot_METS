@@ -86,6 +86,7 @@ Only the first few lines of the tables will be displayed in the terminal. All pl
 		-filtRqual.png: qualilty plot of reverse reads after filtering
 		-fqual.png: qualilty plot of forward reads before filtering
 		-Rqual.png: qualilty plot of reverse reads before filtering
+		-familybarplot.png: taxonomy bar plot on family-level
 			
 You will notice a new subdirectory "filtered" within your crossteam directory. This contains the filtered files. 
 All of your raw data files are unchanged; all filtering/denoising/dereplicating, etc. was done within the filtered subdirectory.
