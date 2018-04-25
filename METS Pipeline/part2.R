@@ -245,6 +245,5 @@ now
 
 print("This is the end of the pipeline. All tables are tab-delimited and all plots are saved as .png files in the Output subdirectory within the working directory provided.")
 
-
 now <- Sys.time()
 now
