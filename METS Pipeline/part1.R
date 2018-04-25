@@ -60,6 +60,7 @@ plotQualityProfile(fnRs)
 dev.off()
 print("Reverse read quality assessed.")
 
+
 print("The quality profiles for the forward and reverse reads have been saved in Output. Use this quality information to choose parameters for filtering and trimming.")
 
 now = Sys.time()
