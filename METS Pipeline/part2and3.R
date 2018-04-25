@@ -27,19 +27,19 @@ now
 ####Here we have to again define fwd and reverse reads####
 path <- opt$file
 #the user should put their working directory in the command to run the script
-
+setwd(path)
 
 ####Process the rest of the arguments####
-print("Parameter list:")
-sprintf("Forward read length: %s", opt$For)
-sprintf("Reverse read length: %s", opt$Rev)
-sprintf("Primer nucleotides trimmed: %s", opt$trimL)
+#print("Parameter list:")
+#sprintf("Forward read length: %s", opt$For)
+#sprintf("Reverse read length: %s", opt$Rev)
+#sprintf("Primer nucleotides trimmed: %s", opt$trimL)
 
 #the arguments are:
-  #1: working directory path; WHOLE PATH
-  #2: desired forward read length
-  #3: desired reverse read length
-  #4: how many nucls to trim from the L. ATM that is the same nmber on fwd and rev
+#1: working directory path; WHOLE PATH
+#2: desired forward read length
+#3: desired reverse read length
+#4: how many nucls to trim from the L. ATM that is the same nmber on fwd and rev
 
 #raw files
 fnFs = sort(list.files(path, pattern= "R1_001.fastq", full.names = TRUE))
@@ -70,7 +70,7 @@ print("Finished filtering. Here's what the filtered files look like:  ")
 
 head(out)
 #prints the first few rows showing the original read counts next to the filtered counts
-write.table(out, "Output/filteredandtrimmed.txt", sep="\t")
+#write.table(out, "Output/filteredandtrimmed.txt", sep="\t")
 #out table saved to txt file. little ugly but does the trick
 
 ####Output filtered read quality####
@@ -85,35 +85,16 @@ plotQualityProfile(filtRs)
 dev.off()
 print("Filtered reverse read quality profile now available in 'Output' subdirectory.")
 
+print("If you are happy with the filtering so far, move on to Part III. Part III will work with the unique sequences to produce taxonomy table and comparison plots.")
+
+
 #Pipeline Part III: This is the part of the pipeline that takes filtered reads, finds the unique
 #sequences, merges paired end reads, assigns taxonomy, creates the taxonomy table and phyloseq
 #plots. 
 
-library(optparse)
-library(dada2)
-
 now <- Sys.time()
 now
-#the user should put their working directory in the command to run the script
-setwd(path)
-getwd()
-filtpath = paste(path, "filtered", sep = "/", collapse = NULL)
-print(filtpath)
 
-# Forward and reverse fastq filenames have format: SAMPLENAME_R1_001.fastq and SAMPLENAME_R2_001.fastq
-fnFs = sort(list.files(path, pattern= "R1_001.fastq", full.names = TRUE))
-fnRs = sort(list.files(path, pattern= "R2_001.fastq", full.names = TRUE))
-sample.names = sapply(strsplit(basename(fnFs), "_"), `[`, 1)
-#samples.names is needed to name the dereplicated ones later. that's why we pass the main directory as the wd to start
-
-# Forward and reverse filtered files
-setwd(filtpath) #now we move to filtered to actually derep and denoise
-getwd()
-filtFs = sort(list.files(filtpath, pattern= "F_filt.fastq", full.names = TRUE))
-filtRs = sort(list.files(filtpath, pattern= "R_filt.fastq", full.names = TRUE))
-print("We start with: ")
-list.files(filtpath)
-#assign vars for the filtered fwds and revs
 
 ####Examine errors####
 print("Examining errors...")
@@ -125,7 +106,7 @@ errR <- learnErrors(filtRs, multithread=FALSE)
 setwd(path)
 png(filename= "Output/errF.png")
 plotErrors(errF, nominalQ=TRUE)
-#points are the observed error rates for each consensus quality score. 
+#oints are the observed error rates for each consensus quality score. 
 #The black line shows the estimated error rates after convergence.
 #The red line shows the error rates expected under the nominal definition of the Q-value. 
 dev.off()
@@ -135,7 +116,7 @@ plotErrors(errR, nominalQ=TRUE)
 dev.off()
 print("Error information is now in Output.")
 
-setwd(filtpath)
+setwd(filt_path)
 ####Dereplication Process####
 print("Now dereplicating...")
 derepFs <- derepFastq(filtFs, verbose=TRUE)
@@ -186,13 +167,11 @@ sum(seqtab.nochim)/sum(seqtab)
 getN <- function(x) sum(getUniques(x))
 
 track <- cbind(out, sapply(dadaFs, getN), sapply(mergers, getN), rowSums(seqtab), rowSums(seqtab.nochim))
-# If processing a single sample, remove the sapply calls: e.g. replace sapply(dadaFs, getN) with getN(dadaFs)
+# # If processing a single sample, remove the sapply calls: e.g. replace sapply(dadaFs, getN) with getN(dadaFs)
 colnames(track) <- c("input", "filtered", "denoised", "merged", "tabled", "nochim")
 rownames(track) <- sample.names
-print( "Make sure we're not losing too many reads:" )
+print( "Let's track the reads left after each step:" )
 head(track)
-#show us how many reads we have for each file as we filter down
-
 
 ####Assign Taxonomy####
 print("Assigning taxonomy...this will take a while.")
@@ -210,47 +189,49 @@ taxa.print
 #display the taxon info
 write.table(taxa.print, "Output/taxonomy.txt", sep="\t")
 
-
 ####Phyloseq####
 library(phyloseq)
 library(ggplot2)
 
 now <- Sys.time()
 now
-
+print("Right version")
 print("Beginning comparison plotting...")
 
-#the variables for the sample data and the METS data are different. use the right file.
+#the variables for the sample data and the METS data are different. use the right chunk.
 
-####gets the location from the sample string FOR MISEQ SAMPLE DATA####
+####gets the location from the filenames
+#samples.out gets all of the filenames
+#parse the name of the sample with strsplit and only look at the left side
+#location creates a substring of the indices 21 to 26 (in this case USA and GHANA)
 samples.out <- rownames(seqtab.nochim)
-subject <- sapply(strsplit(samples.out, "D"), `[`, 1)
-gender <- substr(subject,1,1)
-subject <- substr(subject,2,999)
-day <- as.integer(sapply(strsplit(samples.out, "D"), `[`, 2))
-samdf <- data.frame(Subject=subject, Gender=gender, Day=day)
-samdf$When <- "Early"
-samdf$When[samdf$Day>100] <- "Late"
+subject <- sapply(strsplit(samples.out, "_S"), `[`, 1)
+location <- substr(subject,21,26)
+#remove the "-", extra 0, and the 1USA from location
+location <- gsub('-', '',location)
+location <- gsub('O', 'H20',location)
+location <- gsub('1USA', 'USA', location)
+
+#gets the sample number from the sample string
+#sample_num creates a substring of the numbers from the filenames
+sample_num <-substr(subject, 14, 16)
+#removes the "-" from sample_num
+sample_num <- gsub('-', '',sample_num)
+#creates the data frame with a column called location and a column called SampleName
+samdf <- data.frame(Location = location, SampleName = sample_num)
 rownames(samdf) <- samples.out
 
-
 #a phylo seq object is created
-ps <- phyloseq(otu_table(seqtab.nochim, taxa_are_rows=FALSE), sample_data(samdf), tax_table(taxa))
+ps <- phyloseq(otu_table(seqtab.nochim, taxa_are_rows=FALSE), 
+               sample_data(samdf), 
+               tax_table(taxa))
 ps
-####no mock group in Mets data####
 
-#print("Calculating alpha diversity...")
-#png(filename = "Output/alpha_diversity.png")
-#plot_richness(ps, x= "SampleName", measures=c("Shannon", "Simpson"), color="When") + theme_bw() + theme(axis.text.x=element_text(angle=90,hjust=1))
-#dev.off()
-#print("alpha diversity plot saved to Output.")
-
-#ords.nmds.bray <- ordinate(ps, method = "NMDS", distance = "bray")
-#print("Creating ordination plot...")
-#png(filename = "Output/ordination.png")
-#plot_ordination(ps, ord.nmds.bray, color="Sample", title="Bray NMDS")
-#dev.off()
-#print("Ordination plot saved to Output.")
+print("Calculating alpha diversity...")
+png(filename = "Output/alpha_diversity.png", width = 2000, height = 1200)
+plot_richness(ps, x= "SampleName", measures=c("Shannon", "Simpson"), color="Location") + theme_bw() + theme(axis.text.x=element_text(angle=90,hjust=1))
+dev.off()
+print("alpha diversity plot saved to Output.")
 
 now <- Sys.time()
 now
@@ -259,20 +240,23 @@ top20 <- names(sort(taxa_sums(ps), decreasing=TRUE))[1:20]
 ps.top20 <- transform_sample_counts(ps, function(OTU) OTU/sum(OTU))
 ps.top20 <- prune_taxa(top20, ps.top20)
 
-
 print("Creating family-level bar plot...")
-png(filename = "Output/familybarplot.png")
-plot_bar(ps.top20, x="Day", fill="Family") + facet_wrap(~When, scales="free_x") + theme(axis.text.x=element_text(angle=90,hjust=1))
+png(filename = "Output/familybarplot.png", width = 2000, height = 1200)
+plot_bar(ps.top20, x = "SampleName", fill="Family") + facet_wrap(~Location, scales="free_x") + theme(axis.text.x=element_text(angle=90,hjust=1))
 dev.off()
 print("Family-level bar plot saved to Output.")
 
-
+print("Creating species-level bar plot...")
+png(filename = "Output/speciesbarplot.png")
+plot_bar(ps.top20, x= "SampleName", fill="Species") + facet_wrap(~Location, scales="free_x") + theme(axis.text.x=element_text(angle=90,hjust=1))
+dev.off()
+print("Species-level bar plot saved to Output.")
 
 now <- Sys.time()
 now
 
 print("This is the end of the pipeline. All tables are tab-delimited and all plots are saved as .png files in the Output subdirectory within the working directory provided.")
 
-                                    
+
 now <- Sys.time()
 now  

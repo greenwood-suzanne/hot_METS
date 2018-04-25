@@ -103,7 +103,6 @@ head(taxa.print)
 now <- Sys.time()
 now
 
-
 #phyloseq
 library(phyloseq); packageVersion("phyloseq")
 library(ggplot2); packageVersion("ggplot2")
@@ -119,10 +118,11 @@ location <- gsub('-', '',location)
 location <- gsub('O', 'H20',location)
 location <- gsub('1USA', 'USA', location)
 
+
 #gets the sample number from the sample string
 sample_num <-substr(subject, 14, 16)
 sample_num <- gsub('-', '',sample_num)
-samdf <- data.frame(Location = location, Sample = sample_num)
+samdf <- data.frame(Location = location, SampleName = sample_num)
 rownames(samdf) <- samples.out
 
 #a phylo seq object is created
@@ -131,16 +131,15 @@ ps <- phyloseq(otu_table(seqtab.nochim, taxa_are_rows=FALSE),
                tax_table(taxa))
 ps
 
-
-png(filename = "alpha_diversity.png")
-plot_richness(ps, x="Sample", measures=c("Shannon", "Simpson"), color="Location") + theme_bw() + theme(axis.text.x=element_text(angle=90,hjust=1))
+png(filename = "alpha_diversity.png", width = 2000, height = 1200)
+plot_richness(ps, x= "SampleName", measures=c("Shannon", "Simpson"), color="Location") + theme_bw() + theme(axis.text.x=element_text(angle=90,hjust=1))
 dev.off()
 
-ords.nmds.bray <- ordinate(ps, method = "NMDS", distance = "bray")
+#ords.nmds.bray <- ordinate(ps, method = "NMDS", distance = "bray")
 
-png(filename = "ordination.png")
+#png(filename = "ordination.png")
 #plot_ordination(ps, ord.nmds.bray, color="Location", title="Bray NMDS")
-dev.off()
+#dev.off()
 
 now <- Sys.time()
 now
@@ -149,13 +148,14 @@ top20 <- names(sort(taxa_sums(ps), decreasing=TRUE))[1:20]
 ps.top20 <- transform_sample_counts(ps, function(OTU) OTU/sum(OTU))
 ps.top20 <- prune_taxa(top20, ps.top20)
 
-png(filename = "familybarplot.png")
-plot_bar(ps.top20, x="Sample", fill="Family") + facet_wrap(~Location, scales="free_x")
+#creates a bar plot of the family
+png(filename = "familybarplot.png", width = 2000, height = 1200)
+plot_bar(ps.top20, x = "SampleName", fill="Family") + facet_wrap(~Location, scales="free_x") + theme(axis.text.x=element_text(angle=90,hjust=1))
 dev.off()
 
 #creates a bar plot of the species
-#png(filename = "speciesbarplot.png")
-#plot_bar(ps.top20, x= "Sample", fill="Species") + facet_wrap(~Location, scales="free_x")
+#png(filename = "speciesbarplot.png",width = 2000, height = 1200)
+#plot_bar(ps.top20, x= "SampleName", fill="Species") + facet_wrap(~Location, scales="free_x") + theme(axis.text.x=element_text(angle=90,hjust=1))
 #dev.off()
 
 now <- Sys.time()
