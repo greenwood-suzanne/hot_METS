@@ -6,11 +6,11 @@ Group Repo for CompBio METS project
   
   
 # Requirements:
-  -Sample data 
+  *Sample data 
   	*located in the MiSeq_SOP folder on this repository
-  -Silva v132 database files. 
+  *Silva v132 database files. 
   	*DADA2-formatted Silva training files can be found at: https://zenodo.org/record/1172783#.WtvfsWbMyu5
-  -Scripts 'part1.R' and 'part2_miseq.R'
+  *Scripts 'part1.R' and 'part2_miseq.R'
   	*located in 'Sample_Pipeline' folder
 	
   *The METS Pipeline folder contains the same files as Sample_Pipeline, however input parameters have been specifically ammended for the METS data (not published in repository due to size constraints).
