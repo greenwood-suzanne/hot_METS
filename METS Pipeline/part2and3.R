@@ -1,4 +1,6 @@
-#Pipeline Part II: This part begins with the filtering and trimming of raw data and runs through plotting.
+#Pipeline Part II and III: This part begins with the filtering and trimming of raw data and runs through plotting.
+
+#Part II: filters reads, takes filtered reads, finds the unique sequences, merges paired end reads, assigns taxonomy
 library(optparse)
 library(dada2)
 
@@ -88,9 +90,6 @@ print("Filtered reverse read quality profile now available in 'Output' subdirect
 print("If you are happy with the filtering so far, move on to Part III. Part III will work with the unique sequences to produce taxonomy table and comparison plots.")
 
 
-#Pipeline Part III: This is the part of the pipeline that takes filtered reads, finds the unique
-#sequences, merges paired end reads, assigns taxonomy, creates the taxonomy table and phyloseq
-#plots. 
 
 now <- Sys.time()
 now
@@ -189,6 +188,8 @@ taxa.print
 #display the taxon info
 write.table(taxa.print, "Output/taxonomy.txt", sep="\t")
 
+
+#Pipeline Part III: This is the part of the pipeline that creates the taxonomy table plots. 
 ####Phyloseq####
 library(phyloseq)
 library(ggplot2)
