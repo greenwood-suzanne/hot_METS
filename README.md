@@ -28,8 +28,7 @@ ggplot2: http://ggplot2.org
 	
 
 # To Import from GitHub:
-In addition to the crossteam directory (see Introduction) you will need the crossteam.R file to run the pipeline. 
-Import this file from GitHub using:
+The pipeline can be cloned from:
 
 	git clone https://github.com/greenwood-suzanne/hot_METS.git
 
