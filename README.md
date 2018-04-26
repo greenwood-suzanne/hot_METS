@@ -56,15 +56,14 @@ The pipeline can be cloned from:
    
    * Part II:
    
-   -Plot with Phyloseq: creates bar-graph output for the taxonomic groups present in the
-      two-sample groups (Ghana and US for comparison)
+   -Plot with Phyloseq: creates bar-graph output for the taxonomic groups present in the two-sample groups (MiSeq: Early vs Late, METS: Ghana vs USA) for comparison
 
 In order to run the pipeline through the command line, the Unix commands should follow this format:
  	
 	Rscript part1.R 
 	-f <working_directory_folder>
 
- 	Rscript part2and3.R 
+ 	Rscript part2.R 
 	-f <working_directory_folder> 
 	-F <forward_filter_length> 
 	-R <reverse_filter_length> 
@@ -81,7 +80,7 @@ For assistance, please consult the 'help' prompt:
 Only the first few lines of the tables will be displayed in the terminal. All plots are saved as .png files in a folder titled 'Output' within the specified working directory. The graphical output is as follows:
 
 	Tables:
-		-out: table summarizing the number of reads in each file before and after filtering by PHRED score and after 		the removal of Ns and primers
+		-out: table summarizing the number of reads in each file before and after filtering by PHRED score and after the removal of Ns and primers
 		-seqtab: list containing reads occurances in each file
 		-seqtab.nochim: seqtab without chimeras 
 		-track: table displaying frequency of reads in each file after each operation of the pipeline 
