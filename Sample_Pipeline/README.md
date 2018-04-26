@@ -30,10 +30,13 @@ ggplot2: http://ggplot2.org
 The pipeline is broken into 2 R scripts that can be run in command line.
 
 # Part I:
-Analyzes the quality of the raw sequencing reads and outputs quality profiles for each appropriately-named file in the working directory.
+Analyzes the quality of the raw sequencing reads and outputs quality profiles for each appropriately-named file in the working directory, filters and trims the reads in all files, outputs quality profiles for the filtered data, and creates a new folder within the working directory called Filtered which contains the filtered reads.
+
 	output files are .png format, and appear in a newly created folder within the provided working directory, Output.
 	Output file names: fqual.png -- forward read quality profile
 			   rqual.png -- reverse read quality profile
+			   filtFqual.png -- quality profile of filtered forward files
+			   filtRqual.png -- quality profile of filtered reverse files
 
 To run Part I: 
 	
@@ -44,18 +47,12 @@ for help, type:
 	
 		Rscript part1.R -h
 
-If raw sequencing read quality is already known, and desired filtering parameters are known,  Part I can be skipped.
 
+# Part II: 
 
-# Parts II and III: 
-Part II filters and trims the reads in all files, outputs quality profiles for the filtered data, and creates a new folder within the working directory called Filtered which contains the filtered reads.
-	Output files are in .png or .txt formats and will again appear in the Output folder.
-	Output file names: filtFqual.png -- quality profile of filtered forward files
-			   filtRqual.png -- quality profile of filtered reverse files
-			   filteredandtrimmed.txt -- tab-delimited table displaying file name	#reads in input	#reads in output
-
+This is the phyloseq portion of the pipeline. This part taakes taxonomy information from Part I and creates the taxonomy plots.
  
-To run Parts II and III: 
+To run Parts II: 
 	
 	Rscript part2_miseq.R -f arg1 -F arg2 -R arg3  -T arg4>
 
@@ -73,9 +70,9 @@ where arg#:
 The flags can be also typed out as: --file, --For, --Rev, and --TrimL, respectively. The -h/--help flag is also available on parts 2 and 3.
  
  
-Part III is the part of the pipeline that takes filtered reads, finds the unique sequences, merges paired end reads, assigns taxonomy, creates the taxonomy table and phyloseq plots.
-	This is the most time-consuming part of the pipeline. 
-	This is where the Silva v132 database is used.
+
+This is the most time-consuming part of the pipeline.
+
 	Output files: .png and .txt formats and will be located in the Output sub-directory
 	Output file names: errF.png -- error plots for forward reads
 			   errR.png -- error plots for reverse reads
