@@ -38,10 +38,10 @@ The pipeline can be cloned from:
 # Implementation:
    The pipeline will input in the specified folder directory containing your FASTQ reads and will perform the following major steps:
    
-   Part I:
-   -Evaluate quality of raw data
+   * Part I:
    
-   Part II:
+   -Evaluate quality of raw data
+  
    -Filter and trim the raw data: Removes PCR/Sequencing primers, excluding all N bases and all reads with PHRED scores below specified threshold.
    
    -Evaluate errors: neessary for the acquisition of taxonomy information in latter steps. Outputs plots of error x quality. 
@@ -54,7 +54,8 @@ The pipeline can be cloned from:
       
    -Remove chimeras: isolates properly-paired forward and reverse reads 
    
-   Part III:
+   * Part II:
+   
    -Plot with Phyloseq: creates bar-graph output for the taxonomic groups present in the
       two-sample groups (Ghana and US for comparison)
 
