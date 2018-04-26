@@ -3,7 +3,7 @@
 Suzanne Greenwood, Christina Printzis, Nathaniel Polley
 
 This pipeline is designed for microbiome comparison between two groups using paired-end 16S rRNA sequencing reads in FASTQ format.
-Aftering filtering, trimming and further cleaning the raw data, taxonomy information is determined and outputted in a taxonomy table and comparison plots. Also included are alpha diversity plots and ordination plots.
+Aftering filtering, trimming and further cleaning the raw data, taxonomy information is determined and outputted in a taxonomy table and comparison plots.
 In order to use this pipeline for FASTQ files not containing 16S rRNA sequencing reads, the database used to determine taxonomy must be changed. The default is Silva v132. 
 Both the training set file and the database file must be in the working directory for taxonomic assignment.
 The pipeline requires that input FASTQ files be named in the following format:
