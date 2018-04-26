@@ -7,7 +7,7 @@ In order to run the pipeline through the command line your unix commands should 
 
 `Rscript part1.R -f <your_directory_here>`
 
-`Rscript part2and3.R -f <your_directory> -F <forward_filter_length> -R <reverse_filter_length> -T a<#nucls_to_trim_from_left>`
+`Rscript part2.R -f <your_directory> -F <forward_filter_length> -R <reverse_filter_length> -T a<#nucls_to_trim_from_left>`
 
 *For METS data, we recommend using -F 320 -R 220 -T 15
 
